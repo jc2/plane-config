@@ -121,7 +121,8 @@ services:
       DEBUG: ${DEBUG:-0}
       SECRET_KEY: ${SECRET_KEY}
     command: >
-      sh -c "python manage.py migrate &&
+      sh -c "sleep 10 &&
+             python manage.py migrate --noinput &&
              python manage.py collectstatic --noinput"
     volumes:
       - plane_uploads:/uploads
