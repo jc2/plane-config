@@ -61,7 +61,7 @@ services:
       # Email (optional for POC)
       EMAIL_BACKEND: console
     ports:
-      - "8000:8000"
+      - "${BIND_HOST:-127.0.0.1}:8000:8000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
       interval: 30s
@@ -78,7 +78,7 @@ services:
     environment:
       NEXT_PUBLIC_API_BASE_URL: http://backend:8000
     ports:
-      - "3000:3000"
+      - "${BIND_HOST:-127.0.0.1}:3000:3000"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 30s
