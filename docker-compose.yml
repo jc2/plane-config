@@ -51,7 +51,7 @@ services:
       REDIS_URL: redis://redis:6379
 
       # Django
-      DEBUG: ${DEBUG:-False}
+      DEBUG: ${DEBUG:-0}
       SECRET_KEY: ${SECRET_KEY}
       ALLOWED_HOSTS: ${ALLOWED_HOSTS}
 
@@ -100,7 +100,7 @@ services:
     environment:
       DATABASE_URL: postgresql://plane:${DB_PASSWORD}@db:5432/plane
       REDIS_URL: redis://redis:6379
-      DEBUG: ${DEBUG:-False}
+      DEBUG: ${DEBUG:-0}
       SECRET_KEY: ${SECRET_KEY}
     volumes:
       - plane_uploads:/uploads
@@ -118,7 +118,7 @@ services:
     environment:
       DATABASE_URL: postgresql://plane:${DB_PASSWORD}@db:5432/plane
       REDIS_URL: redis://redis:6379
-      DEBUG: ${DEBUG:-False}
+      DEBUG: ${DEBUG:-0}
       SECRET_KEY: ${SECRET_KEY}
     command: >
       sh -c "python manage.py migrate &&
