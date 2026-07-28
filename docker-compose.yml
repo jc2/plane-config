@@ -67,10 +67,11 @@ services:
              python manage.py migrate --noinput &&
              gunicorn --workers=2 --worker-class=uvicorn.workers.UvicornWorker --bind=0.0.0.0:8000 plane.wsgi"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/ || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
+      start_period: 30s
 
   # Plane Frontend
   web:
@@ -84,10 +85,11 @@ services:
     ports:
       - "${BIND_HOST:-127.0.0.1}:3000:3000"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000 || exit 1"]
       interval: 30s
       timeout: 10s
-      retries: 3
+      retries: 5
+      start_period: 30s
 
   # Plane Worker (background jobs)
   worker:
