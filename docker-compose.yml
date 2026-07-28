@@ -95,11 +95,34 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      migrator:
+        condition: service_completed_successfully
     environment:
       DATABASE_URL: postgresql://plane:${DB_PASSWORD}@db:5432/plane
       REDIS_URL: redis://redis:6379
       DEBUG: ${DEBUG:-False}
       SECRET_KEY: ${SECRET_KEY}
+    volumes:
+      - plane_uploads:/uploads
+
+  # Database migrator (runs once on first deploy, then skips)
+  migrator:
+    image: makeplane/plane-backend:latest
+    container_name: plane-migrator
+    restart: no
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://plane:${DB_PASSWORD}@db:5432/plane
+      REDIS_URL: redis://redis:6379
+      DEBUG: ${DEBUG:-False}
+      SECRET_KEY: ${SECRET_KEY}
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput"
     volumes:
       - plane_uploads:/uploads
 
